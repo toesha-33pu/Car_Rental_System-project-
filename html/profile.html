@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - CarRent</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .profile-container {
+            min-height: 100vh;
+            background: var(--light-gray);
+            padding: 2rem;
+            padding-top: 80px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: block;
+            object-fit: cover;
+        }
+
+        .avatar-upload {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-upload label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--light-gray);
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .avatar-upload label:hover {
+            background: var(--border-color);
+        }
+
+        .avatar-upload input[type="file"] {
+            display: none;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 0.375rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+
+        .rental-history {
+            margin-top: 2rem;
+        }
+
+        .rental-card {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rental-image {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0.375rem;
+        }
+
+        .rental-details h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .rental-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-container {
+                padding: 1rem;
+                padding-top: 70px;
+            }
+
+            .rental-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .rental-image {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">CarRent</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="vehicles.html">Vehicles</a>
+                <a href="profile.html" class="active">Profile</a>
+                <a href="login.html" class="btn-login">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <div class="profile-grid">
+            <div class="profile-card">
+                <div class="avatar-upload">
+                    <img src="https://ui-avatars.com/api/?name=esha21&size=150" alt="Profile Avatar" class="profile-avatar" id="avatarPreview">
+                    <label for="avatarUpload">
+                        Change Photo
+                        <input type="file" id="avatarUpload" accept="image/*">
+                    </label>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Total Rentals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">2,450</div>
+                        <div class="stat-label">Loyalty Points</div>
+                    </div>
+                </div>
+
+                <form id="profileForm" onsubmit="handleProfileUpdate(event)">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" value="Esha" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" value="esha21@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" value="+1 (0088) 123-4567" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="license">Driver's License</label>
+                        <input type="text" id="license" value="DL123456789" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%;">
+                        Save Changes
+                    </button>
+                </form>
+            </div>
+
+            <div class="profile-card">
+                <h2 style="margin-bottom: 2rem;">Rental History</h2>
+
+                <div class="rental-history" id="rentalHistory">
+                    <!-- Rental history cards will be dynamically populated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample rental history data
+        const rentalHistory = [
+            {
+                id: 1,
+                vehicle: 'Tesla Model 3',
+                image: 'https://tsportline.com/cdn/shop/articles/red-multi-coat-tesla-model-3-performance-20-tss-flow-forged-arachnid-style-wm-1_9eaa5e7b-43d3-4d74-8cae-96c4108c634a_1280x.jpg?v=1743551701' ,
+                startDate: '2024-01-10',
+                endDate: '2024-01-12',
+                status: 'Completed',
+                cost: '$450'
+            },
+            {
+                id: 2,
+                vehicle: 'BMW X5',
+                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
+                startDate: '2023-12-15',
+                endDate: '2023-12-20',
+                status: 'Completed',
+                cost: '$1000'
+            },
+            {
+                id: 3,
+                vehicle: 'Mercedes C-Class',
+                image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80',
+                startDate: '2023-11-05',
+                endDate: '2023-11-08',
+                status: 'Completed',
+                cost: '$540'
+            }
+        ];
+
+        // Render rental history
+        function renderRentalHistory() {
+            const historyContainer = document.getElementById('rentalHistory');
+            historyContainer.innerHTML = rentalHistory.map(rental => `
+                <div class="rental-card">
+                    <img src="${rental.image}" alt="${rental.vehicle}" class="rental-image">
+                    <div class="rental-details">
+                        <h4>${rental.vehicle}</h4>
+                        <p>${rental.startDate} to ${rental.endDate}</p>
+                        <p>Total Cost: ${rental.cost}</p>
+                    </div>
+                    <span class="rental-status status-completed">${rental.status}</span>
+                </div>
+            `).join('');
+        }
+
+        // Handle avatar upload
+        document.getElementById('avatarUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle profile update
+        function handleProfileUpdate(event) {
+            event.preventDefault();
+            
+            // Here you would typically send the updated profile data to your backend
+            alert('Profile updated successfully!');
+        }
+
+        // Initialize rental history
+        renderRentalHistory();
+    </script>
+</body>
+</html>

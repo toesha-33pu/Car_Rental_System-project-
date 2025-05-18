@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - CarRent</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/signup.css">
+</head>
+<body>
+    <div class="signup-container">
+        <form class="signup-form" id="signupForm" novalidate>
+            <h2>Create Account</h2>
+            
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div class="password-strength">
+                    <span id="strengthText">Password strength: </span>
+                    <div class="strength-meter">
+                        <div id="strengthMeter"></div>
+                    </div>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+
+            <button type="submit" class="btn-submit">Sign Up</button>
+
+            <div class="form-footer">
+                <p>Already have an account? <a href="login.html">Log In</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const strengthMeter = document.getElementById('strengthMeter');
+            const strengthText = document.getElementById('strengthText');
+
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]+/)) strength += 25;
+            if (password.match(/[A-Z]+/)) strength += 25;
+            if (password.match(/[0-9]+/)) strength += 25;
+
+            strengthMeter.style.width = strength + '%';
+
+            if (strength <= 25) {
+                strengthMeter.style.backgroundColor = '#ef4444';
+                strengthText.textContent = 'Password strength: Weak';
+            } else if (strength <= 50) {
+                strengthMeter.style.backgroundColor = '#f59e0b';
+                strengthText.textContent = 'Password strength: Fair';
+            } else if (strength <= 75) {
+                strengthMeter.style.backgroundColor = '#10b981';
+                strengthText.textContent = 'Password strength: Good';
+            } else {
+                strengthMeter.style.backgroundColor = '#059669';
+                strengthText.textContent = 'Password strength: Strong';
+            }
+
+            return strength;
+        }
+
+        document.getElementById('password').addEventListener('input', function(e) {
+            checkPasswordStrength(e.target.value);
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            // Full Name validation
+            const fullName = document.getElementById('fullName');
+            const fullNameError = document.getElementById('fullNameError');
+            if (!fullName.value.trim()) {
+                fullNameError.textContent = 'Full name is required';
+                fullNameError.style.display = 'block';
+                isValid = false;
+            }
+
+            // Email validation
+            const email = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            if (!email.value) {
+                emailError.textContent = 'Email is required';
+                emailError.style.display = 'block';
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.style.display = 'block';
+                isValid = false;
+            }
+
+            // Password validation
+            const password = document.getElementById('password');
+            const passwordError = document.getElementById('passwordError');
+            if (!password.value) {
+                passwordError.textContent = 'Password is required';
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else if (password.value.length < 8) {
+                passwordError.textContent = 'Password must be at least 8 characters';
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else if (checkPasswordStrength(password.value) < 75) {
+                passwordError.textContent = 'Please choose a stronger password';
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+
+            // Confirm Password validation
+            const confirmPassword = document.getElementById('confirmPassword');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            if (!confirmPassword.value) {
+                confirmPasswordError.textContent = 'Please confirm your password';
+                confirmPasswordError.style.display = 'block';
+                isValid = false;
+            } else if (confirmPassword.value !== password.value) {
+                confirmPasswordError.textContent = 'Passwords do not match';
+                confirmPasswordError.style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Here you would typically send the data to your backend
+                console.log('Form is valid, submitting...');
+                // Simulate successful signup
+                alert('Sign up successful!');
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

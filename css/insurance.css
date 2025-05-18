@@ -1,0 +1,116 @@
+.insurance-container {
+    min-height: 100vh;
+    background: var(--light-gray);
+    padding: 2rem;
+    padding-top: 80px;
+}
+
+.insurance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.insurance-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.insurance-card:hover {
+    transform: translateY(-5px);
+}
+
+.insurance-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.coverage-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.coverage-list li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.coverage-list li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+}
+
+.comparison-table {
+    width: 100%;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.comparison-table th {
+    background: var(--primary-color);
+    color: white;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table td:first-child {
+    font-weight: 500;
+}
+
+.faq-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.faq-item h4 {
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .insurance-container {
+        padding: 1rem;
+        padding-top: 70px;
+    }
+
+    .insurance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-table {
+        overflow-x: auto;
+    }
+}

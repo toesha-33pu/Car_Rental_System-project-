@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicles - CarRent</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/vehicles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo"><a href="../index.html" style="text-decoration: none; color: inherit;">CarRent</a></div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="vehicles.html" class="active">Vehicles</a>
+                <a href="profile.html">Profile</a>
+                <a href="login.html" class="btn-login">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="vehicles-container">
+        <div class="filters">
+            <h2 style="margin-bottom: 1.5rem;">Filter Vehicles</h2>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option value="">All Categories</option>
+                        <option value="sedan">Sedan</option>
+                        <option value="suv">SUV</option>
+                        <option value="luxury">Luxury</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="brand">Brand</label>
+                    <select id="brand">
+                        <option value="">All Brands</option>
+                        <option value="tesla">Tesla</option>
+                        <option value="bmw">BMW</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="price">Max Price per Day</label>
+                    <input type="range" id="price" min="50" max="500" step="50" value="500">
+                    <div id="priceValue" style="text-align: center; margin-top: 0.5rem;">$500</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="vehicles-grid" id="vehiclesGrid">
+            <!-- Vehicle cards will be dynamically populated -->
+        </div>
+    </div>
+
+    <script>
+        // Sample vehicle data
+        const vehicles = [
+            {
+                id: 1,
+                name: 'Tesla Model 3',
+                category: 'sedan',
+                brand: 'tesla',
+                image: 'https://tsportline.com/cdn/shop/articles/red-multi-coat-tesla-model-3-performance-20-tss-flow-forged-arachnid-style-wm-1_9eaa5e7b-43d3-4d74-8cae-96c4108c634a_1280x.jpg?v=1743551701',
+                price: 150,
+                specs: {
+                    seats: '5 Seats',
+                    transmission: 'Automatic',
+                    mileage: 'Unlimited',
+                    power: 'Electric'
+                },
+                available: true
+            },
+            {
+                id: 2,
+                name: 'BMW X5',
+                category: 'suv',
+                brand: 'bmw',
+                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
+                price: 200,
+                specs: {
+                    seats: '7 Seats',
+                    transmission: 'Automatic',
+                    mileage: 'Unlimited',
+                    power: 'Hybrid'
+                },
+                available: true
+            },
+            {
+                id: 3,
+                name: 'Mercedes C-Class',
+                category: 'luxury',
+                brand: 'mercedes',
+                image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80',
+                price: 180,
+                specs: {
+                    seats: '5 Seats',
+                    transmission: 'Automatic',
+                    mileage: 'Unlimited',
+                    power: 'Petrol'
+                },
+                available: false
+            },
+            {
+                id: 4,
+                name: 'Audi A6',
+                category: 'luxury',
+                brand: 'audi',
+                image: 'https://static0.carbuzzimages.com/wordpress/wp-content/uploads/gallery-images/original/984000/800/984855.jpg',
+                price: 220,
+                specs: {
+                    seats: '5 Seats',
+                    transmission: 'Automatic',
+                    mileage: 'Unlimited',
+                    power: 'Diesel'
+                },
+                available: true
+            }
+        ];
+
+        // Function to render vehicle cards
+        function renderVehicles(filteredVehicles) {
+            const vehiclesGrid = document.getElementById('vehiclesGrid');
+            vehiclesGrid.innerHTML = '';
+
+            filteredVehicles.forEach(vehicle => {
+                const card = document.createElement('div');
+                card.className = 'vehicle-card';
+                card.style.position = 'relative';
+
+                card.innerHTML = `
+                    <img src="${vehicle.image}" alt="${vehicle.name}" class="vehicle-image">
+                    <span class="availability-badge ${vehicle.available ? 'available' : 'unavailable'}">
+                        ${vehicle.available ? 'Available' : 'Unavailable'}
+                    </span>
+                    <div class="vehicle-info">
+                        <h3 class="vehicle-name">${vehicle.name}</h3>
+                        <div class="vehicle-specs">
+                            ${Object.entries(vehicle.specs).map(([key, value]) => `
+                                <div class="spec-item">
+                                    <strong>${key}:</strong> ${value}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="vehicle-price">$${vehicle.price} per day</div>
+                        <div class="vehicle-actions">
+                            <button class="btn-book primary" ${!vehicle.available ? 'disabled' : ''}
+                                onclick="bookVehicle(${vehicle.id})">
+                                Book Now
+                            </button>
+                            <button class="btn-book secondary" 
+                                onclick="viewDetails(${vehicle.id})">
+                                Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                vehiclesGrid.appendChild(card);
+            });
+        }
+
+        // Filter functionality
+        function filterVehicles() {
+            const category = document.getElementById('category').value;
+            const brand = document.getElementById('brand').value;
+            const maxPrice = parseInt(document.getElementById('price').value);
+
+            const filtered = vehicles.filter(vehicle => {
+                const matchesCategory = !category || vehicle.category === category;
+                const matchesBrand = !brand || vehicle.brand === brand;
+                const matchesPrice = vehicle.price <= maxPrice;
+
+                return matchesCategory && matchesBrand && matchesPrice;
+            });
+
+            renderVehicles(filtered);
+        }
+
+        // Initialize price range display
+        const priceRange = document.getElementById('price');
+        const priceValue = document.getElementById('priceValue');
+        priceRange.addEventListener('input', (e) => {
+            priceValue.textContent = `$${e.target.value}`;
+            filterVehicles();
+        });
+
+        // Add event listeners to filters
+        document.getElementById('category').addEventListener('change', filterVehicles);
+        document.getElementById('brand').addEventListener('change', filterVehicles);
+
+        // Booking functionality
+        function bookVehicle(id) {
+            const vehicle = vehicles.find(v => v.id === id);
+            if (vehicle && vehicle.available) {
+                alert(`Booking initiated for ${vehicle.name}`);
+                // Here you would typically redirect to the booking page
+                window.location.href = `booking.html?vehicle=${id}`;
+            }
+        }
+
+        // View details functionality
+        function viewDetails(id) {
+            const vehicle = vehicles.find(v => v.id === id);
+            if (vehicle) {
+                alert(`Viewing details for ${vehicle.name}`);
+                // Here you would typically show a modal or redirect to details page
+            }
+        }
+
+        // Initial render
+        renderVehicles(vehicles);
+    </script>
+    <script src="../js/vehicles.js"></script>
+</body>
+</html>

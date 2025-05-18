@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Vehicle - CarRent</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .booking-container {
+            min-height: 100vh;
+            background: var(--light-gray);
+            padding: 2rem;
+            padding-top: 80px;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .booking-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+
+        .date-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .additional-services {
+            margin-top: 2rem;
+        }
+
+        .service-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 1rem;
+        }
+
+        .service-details {
+            flex: 1;
+        }
+
+        .service-price {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .booking-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .vehicle-preview {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .vehicle-preview img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-container {
+                padding: 1rem;
+                padding-top: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">CarRent</div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="vehicles.html">Vehicles</a>
+                <a href="profile.html">Profile</a>
+                <a href="login.html" class="btn-login">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="booking-container">
+        <div class="booking-grid">
+            <div class="booking-form">
+                <h2 style="margin-bottom: 2rem;">Book Your Vehicle</h2>
+                
+                <form id="bookingForm" onsubmit="handleBooking(event)">
+                    <div class="vehicle-preview">
+                        <img id="vehicleImage" src="" alt="Selected Vehicle">
+                        <h3 id="vehicleName"></h3>
+                    </div>
+
+                    <div class="date-grid">
+                        <div class="form-group">
+                            <label for="pickupDate">Pickup Date</label>
+                            <input type="datetime-local" id="pickupDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="returnDate">Return Date</label>
+                            <input type="datetime-local" id="returnDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pickupLocation">Pickup Location</label>
+                        <select id="pickupLocation" required>
+                            <option value="">Select location</option>
+                            <option value="airport">Airport Terminal</option>
+                            <option value="downtown">Downtown Office</option>
+                            <option value="hotel">Hotel Delivery</option>
+                        </select>
+                    </div>
+
+                    <div class="additional-services">
+                        <h3 style="margin-bottom: 1rem;">Additional Services</h3>
+                        
+                        <div class="service-option">
+                            <input type="checkbox" id="insurance" name="insurance">
+                            <div class="service-details">
+                                <label for="insurance">Premium Insurance</label>
+                                <p>Full coverage with zero deductible</p>
+                            </div>
+                            <span class="service-price">$30/day</span>
+                        </div>
+
+                        <div class="service-option">
+                            <input type="checkbox" id="gps" name="gps">
+                            <div class="service-details">
+                                <label for="gps">GPS Navigation</label>
+                                <p>Built-in GPS system</p>
+                            </div>
+                            <span class="service-price">$10/day</span>
+                        </div>
+
+                        <div class="service-option">
+                            <input type="checkbox" id="childSeat" name="childSeat">
+                            <div class="service-details">
+                                <label for="childSeat">Child Seat</label>
+                                <p>Safe and comfortable child seat</p>
+                            </div>
+                            <span class="service-price">$8/day</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="booking-summary">
+                <h3 style="margin-bottom: 1.5rem;">Booking Summary</h3>
+                
+                <div class="summary-item">
+                    <span>Base Rate</span>
+                    <span id="baseRate">$0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Duration</span>
+                    <span id="duration">0 days</span>
+                </div>
+                <div class="summary-item">
+                    <span>Additional Services</span>
+                    <span id="additionalServices">$0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Taxes & Fees</span>
+                    <span id="taxes">$0</span>
+                </div>
+
+                <div class="total-price">
+                    <span>Total</span>
+                    <span id="totalPrice">$0</span>
+                </div>
+
+                <button type="submit" form="bookingForm" class="btn-primary" style="width: 100%; margin-top: 1.5rem;">
+                    Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get vehicle ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const vehicleId = urlParams.get('vehicle');
+
+        // Sample vehicle data (in real app, this would come from a database)
+        const vehicles = {
+            1: {
+                name: 'Tesla Model 3',
+                image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=800&q=80',
+                baseRate: 150
+            },
+            2: {
+                name: 'BMW X5',
+                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
+                baseRate: 200
+            },
+            3: {
+                name: 'Mercedes C-Class',
+                image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80',
+                baseRate: 180
+            }
+        };
+
+        // Initialize vehicle details
+        const vehicle = vehicles[vehicleId];
+        if (vehicle) {
+            document.getElementById('vehicleImage').src = vehicle.image;
+            document.getElementById('vehicleName').textContent = vehicle.name;
+            document.getElementById('baseRate').textContent = `$${vehicle.baseRate}`;
+        }
+
+        // Set minimum dates for pickup and return
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        document.getElementById('pickupDate').min = today.toISOString().split('.')[0];
+        document.getElementById('returnDate').min = tomorrow.toISOString().split('.')[0];
+
+        // Calculate total price
+        function calculateTotal() {
+            if (!vehicle) return;
+
+            const pickupDate = new Date(document.getElementById('pickupDate').value);
+            const returnDate = new Date(document.getElementById('returnDate').value);
+            
+            if (pickupDate && returnDate && returnDate > pickupDate) {
+                const days = Math.ceil((returnDate - pickupDate) / (1000 * 60 * 60 * 24));
+                document.getElementById('duration').textContent = `${days} days`;
+
+                // Calculate additional services
+                let additionalServices = 0;
+                if (document.getElementById('insurance').checked) additionalServices += 30 * days;
+                if (document.getElementById('gps').checked) additionalServices += 10 * days;
+                if (document.getElementById('childSeat').checked) additionalServices += 8 * days;
+
+                document.getElementById('additionalServices').textContent = `$${additionalServices}`;
+
+                // Calculate base cost
+                const baseCost = vehicle.baseRate * days;
+                document.getElementById('baseRate').textContent = `$${baseCost}`;
+
+                // Calculate taxes (assume 10%)
+                const taxes = Math.round((baseCost + additionalServices) * 0.1);
+                document.getElementById('taxes').textContent = `$${taxes}`;
+
+                // Calculate total
+                const total = baseCost + additionalServices + taxes;
+                document.getElementById('totalPrice').textContent = `$${total}`;
+            }
+        }
+
+        // Add event listeners
+        document.getElementById('pickupDate').addEventListener('change', calculateTotal);
+        document.getElementById('returnDate').addEventListener('change', calculateTotal);
+        document.getElementById('insurance').addEventListener('change', calculateTotal);
+        document.getElementById('gps').addEventListener('change', calculateTotal);
+        document.getElementById('childSeat').addEventListener('change', calculateTotal);
+
+        // Handle booking submission
+        function handleBooking(event) {
+            event.preventDefault();
+            
+            const pickupDate = new Date(document.getElementById('pickupDate').value);
+            const returnDate = new Date(document.getElementById('returnDate').value);
+            const pickupLocation = document.getElementById('pickupLocation').value;
+
+            if (!pickupLocation) {
+                alert('Please select a pickup location');
+                return;
+            }
+
+            if (!pickupDate || !returnDate || returnDate <= pickupDate) {
+                alert('Please select valid pickup and return dates');
+                return;
+            }
+
+            // Here you would typically send the booking data to your backend
+            alert('Booking successful! You will receive a confirmation email shortly.');
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
