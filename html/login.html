@@ -1,92 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - CarRent</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/login.css">
-       
-
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - CarRent</title>
+  <link rel="stylesheet" href="../Asset/css/style.css" />
+  <link rel="stylesheet" href="../Asset/css/login.css" />
+  <style>
+    /* Simple error message styling */
+    #errorMsg {
+      color: red;
+      text-align: center;
+      margin-bottom: 1rem;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="login-container">
-        <form class="login-form" id="loginForm" method="POST" action="../login.php" novalidate>
-            
-            <h2 style="text-align: center; margin-bottom: 2rem;">Welcome Back</h2>
-            
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-                <div class="error-message" id="emailError"></div>
-            </div>
+  <div class="login-container">
+    <form class="login-form" id="loginForm">
+      <h2 style="text-align: center; margin-bottom: 2rem;">Welcome Back</h2>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <div class="error-message" id="passwordError"></div>
-            </div>
+      <div id="errorMsg"></div>
 
-            <button type="submit" class="btn-submit">Log In</button>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
 
-            <div class="success-message" id="successMessage">Login successful! Redirecting...</div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
 
-            <div class="form-footer">
-                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-                <p style="margin-top: 0.5rem;"><a href="forgot-password.html">Forgot Password?</a></p>
-            </div>
-        </form>
-    </div>
+      <div class="form-group">
+        <label><input type="checkbox" name="remember_me" id="remember_me" /> Remember Me</label>
+      </div>
 
-    <script>
-        function showSuccessMessage() {
-            document.getElementById('successMessage').style.display = 'block';
+      <button type="submit" name="submit" class="btn-submit">Log In</button>
+
+      <div class="form-footer">
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+        <p style="margin-top: 0.5rem;"><a href="forgot-password.html">Forgot Password?</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const rememberMe = document.getElementById('remember_me').checked;
+
+      // Clear previous error
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.style.display = 'none';
+      errorMsg.textContent = '';
+
+      if (!email || !password) {
+        errorMsg.textContent = 'Please enter both email and password.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Prepare form data for POST
+      const formData = new URLSearchParams();
+      formData.append('email', email);
+      formData.append('password', password);
+      if (rememberMe) formData.append('remember_me', '1');
+      formData.append('submit', '1');
+
+      try {
+        const response = await fetch('../controller/login.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString()
+        });
+
+        // Expecting JSON response from PHP (we'll update PHP code accordingly)
+        const data = await response.json();
+
+        if (data.success) {
+          // Redirect on successful login
+          window.location.href = 'dashboard.html';
+        } else {
+          // Show error message from backend
+          errorMsg.textContent = data.error || 'Login failed. Please try again.';
+          errorMsg.style.display = 'block';
         }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            let isValid = true;
-
-            // Reset error messages
-            document.querySelectorAll('.error-message').forEach(error => {
-                error.style.display = 'none';
-            });
-
-            // Email validation
-            const email = document.getElementById('email');
-            const emailError = document.getElementById('emailError');
-            if (!email.value) {
-                emailError.textContent = 'Email is required';
-                emailError.style.display = 'block';
-                isValid = false;
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-                emailError.textContent = 'Please enter a valid email address';
-                emailError.style.display = 'block';
-                isValid = false;
-            }
-
-            // Password validation
-            const password = document.getElementById('password');
-            const passwordError = document.getElementById('passwordError');
-            if (!password.value) {
-                passwordError.textContent = 'Password is required';
-                passwordError.style.display = 'block';
-                isValid = false;
-            } else if (password.value.length < 6) {
-                passwordError.textContent = 'Password must be at least 6 characters';
-                passwordError.style.display = 'block';
-                isValid = false;
-            }
-
-            if (!isValid) return;
-            
-            // If valid, show success and redirect
-            showSuccessMessage();
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 2000);
-        });
-    </script>
+      } catch (error) {
+        errorMsg.textContent = 'An error occurred. Please try again later.';
+        errorMsg.style.display = 'block';
+        console.error('Login error:', error);
+      }
+    });
+  </script>
 </body>
 </html>

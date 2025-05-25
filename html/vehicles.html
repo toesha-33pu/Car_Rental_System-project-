@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicles - CarRent</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/vehicles.css">
+    <link rel="stylesheet" href="../Asset/css/style.css">
+    <link rel="stylesheet" href="../Asset/css/vehicles.css">
 </head>
 <body>
     <header class="header">
@@ -15,7 +15,7 @@
                 <a href="dashboard.html">Dashboard</a>
                 <a href="vehicles.html" class="active">Vehicles</a>
                 <a href="profile.html">Profile</a>
-                <a href="login.html" class="btn-login">Logout</a>
+               
             </div>
         </nav>
     </header>
@@ -58,6 +58,21 @@
     </div>
 
     <script>
+          window.onload = function() {
+        fetch('../controller/check_session.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    // Not logged in, redirect to login page
+                    window.location.href = 'login.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking session:', error);
+                // Optional: redirect or show error message
+                window.location.href = 'login.html';
+            });
+    };
         // Sample vehicle data
         const vehicles = [
             {
@@ -215,6 +230,6 @@
         // Initial render
         renderVehicles(vehicles);
     </script>
-    <script src="../js/vehicles.js"></script>
+    <script src="../Asset/js/vehicles.js"></script>
 </body>
 </html>

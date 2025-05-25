@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - CarRent</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../Asset/css/style.css">
     <style>
         .profile-container {
             min-height: 100vh;
@@ -230,6 +230,21 @@
     </div>
 
     <script>
+          window.onload = function() {
+        fetch('../controller/check_session.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    // Not logged in, redirect to login page
+                    window.location.href = 'login.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking session:', error);
+                // Optional: redirect or show error message
+                window.location.href = 'login.html';
+            });
+    };
         // Sample rental history data
         const rentalHistory = [
             {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book a Vehicle - CarRent</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../Asset/css/style.css">
     <style>
         .booking-container {
             min-height: 100vh;
@@ -142,7 +142,7 @@
                 <a href="dashboard.html">Dashboard</a>
                 <a href="vehicles.html">Vehicles</a>
                 <a href="profile.html">Profile</a>
-                <a href="login.html" class="btn-login">Logout</a>
+                <a href="../controller/logout.php" class="btn-login">Logout</a>
             </div>
         </nav>
     </header>
@@ -245,6 +245,22 @@
     </div>
 
     <script>
+
+    window.onload = function() {
+        fetch('../controller/check_session.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    // Not logged in, redirect to login page
+                    window.location.href = 'login.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking session:', error);
+                // Optional: redirect or show error message
+                window.location.href = 'login.html';
+            });
+    };
         // Get vehicle ID from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const vehicleId = urlParams.get('vehicle');
@@ -268,7 +284,6 @@
             }
         };
 
-        // Initialize vehicle details
         const vehicle = vehicles[vehicleId];
         if (vehicle) {
             document.getElementById('vehicleImage').src = vehicle.image;
@@ -276,7 +291,7 @@
             document.getElementById('baseRate').textContent = `$${vehicle.baseRate}`;
         }
 
-        // Set minimum dates for pickup and return
+
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -342,7 +357,6 @@
                 return;
             }
 
-            // Here you would typically send the booking data to your backend
             alert('Booking successful! You will receive a confirmation email shortly.');
             window.location.href = 'dashboard.html';
         }
