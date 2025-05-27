@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Records</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="fuel-tracking.html">Fuel Tracking</a></li>
+                <li><a href="loyalty.html">Loyalty</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="maintenance-timeline">
+        <h1>Vehicle Maintenance History</h1>
+        
+        <section class="maintenance-status">
+            <div class="status-card">
+                <h3>Last Service</h3>
+                <p>2024-03-10</p>
+                <span class="status-indicator good"></span>
+            </div>
+            
+            <div class="status-card">
+                <h3>Next Due</h3>
+                <p>2024-06-01</p>
+                <span class="status-indicator warning"></span>
+            </div>
+        </section>
+
+        <section class="service-history">
+            <h2>Service Timeline</h2>
+            <div class="log-entry">
+                <div class="log-date">2024-03-10</div>
+                <div class="log-details">
+                    <h4>Oil Change & Filter Replacement</h4>
+                    <p>Performed standard maintenance package</p>
+                </div>
+            </div>
+            
+            <div class="log-entry">
+                <div class="log-date">2024-01-15</div>
+                <div class="log-details">
+                    <h4>Tire Rotation</h4>
+                    <p>Adjusted tire pressure and rotation pattern</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/validation.js"></script>
+</body>
+</html>
