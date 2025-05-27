@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../Asset/css/style.css" />
   <link rel="stylesheet" href="../Asset/css/login.css" />
   <style>
-    /* Simple error message styling */
+    
     #errorMsg {
       color: red;
       text-align: center;
@@ -81,7 +81,6 @@
           body: formData.toString()
         });
 
-        // Expecting JSON response from PHP (we'll update PHP code accordingly)
         const data = await response.json();
 
         if (data.success) {

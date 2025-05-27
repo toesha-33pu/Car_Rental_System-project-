@@ -40,12 +40,10 @@ if (isset($_POST['submit'])) {
 
         if ($status) {
             echo "Registration successful!";
-            // Uncomment if you want redirection after testing:
              header('Location: ../html/login.html');
         } else {
 
             echo "Registration failed.";
-            // Uncomment if you want redirection after testing:
             header('Location: ../html/signup.html');
         }
     }
