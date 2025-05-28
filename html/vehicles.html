@@ -73,69 +73,26 @@
                 window.location.href = 'login.html';
             });
     };
-        // Sample vehicle data
-        const vehicles = [
-            {
-                id: 1,
-                name: 'Tesla Model 3',
-                category: 'sedan',
-                brand: 'tesla',
-                image: 'https://tsportline.com/cdn/shop/articles/red-multi-coat-tesla-model-3-performance-20-tss-flow-forged-arachnid-style-wm-1_9eaa5e7b-43d3-4d74-8cae-96c4108c634a_1280x.jpg?v=1743551701',
-                price: 150,
-                specs: {
-                    seats: '5 Seats',
-                    transmission: 'Automatic',
-                    mileage: 'Unlimited',
-                    power: 'Electric'
-                },
-                available: true
-            },
-            {
-                id: 2,
-                name: 'BMW X5',
-                category: 'suv',
-                brand: 'bmw',
-                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
-                price: 200,
-                specs: {
-                    seats: '7 Seats',
-                    transmission: 'Automatic',
-                    mileage: 'Unlimited',
-                    power: 'Hybrid'
-                },
-                available: true
-            },
-            {
-                id: 3,
-                name: 'Mercedes C-Class',
-                category: 'luxury',
-                brand: 'mercedes',
-                image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80',
-                price: 180,
-                specs: {
-                    seats: '5 Seats',
-                    transmission: 'Automatic',
-                    mileage: 'Unlimited',
-                    power: 'Petrol'
-                },
-                available: false
-            },
-            {
-                id: 4,
-                name: 'Audi A6',
-                category: 'luxury',
-                brand: 'audi',
-                image: 'https://static0.carbuzzimages.com/wordpress/wp-content/uploads/gallery-images/original/984000/800/984855.jpg',
-                price: 220,
-                specs: {
-                    seats: '5 Seats',
-                    transmission: 'Automatic',
-                    mileage: 'Unlimited',
-                    power: 'Diesel'
-                },
-                available: true
-            }
-        ];
+        let vehicles = [];
+
+        fetch('../controller/get_vehicles.php')
+            .then(response => response.json())
+            .then(data => {
+                vehicles = data.map(v => ({
+                    ...v,
+                    id: parseInt(v.id),
+                    price: parseInt(v.price),
+                    available: v.available == "1",
+                    specs: {
+                        seats: v.seats,
+                        transmission: v.transmission,
+                        mileage: v.mileage,
+                        power: v.power
+                    }
+                }));
+                renderVehicles(vehicles);
+            })
+            .catch(error => console.error('Error fetching vehicles:', error));
 
         // Function to render vehicle cards
         function renderVehicles(filteredVehicles) {
@@ -204,7 +161,7 @@
             filterVehicles();
         });
 
-        // Add event listeners to filters
+        
         document.getElementById('category').addEventListener('change', filterVehicles);
         document.getElementById('brand').addEventListener('change', filterVehicles);
 
@@ -223,7 +180,7 @@
             const vehicle = vehicles.find(v => v.id === id);
             if (vehicle) {
                 alert(`Viewing details for ${vehicle.name}`);
-                // Here you would typically show a modal or redirect to details page
+            
             }
         }
 
