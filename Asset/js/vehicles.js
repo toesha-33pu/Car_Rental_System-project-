@@ -1,4 +1,4 @@
-// Vehicle data (in a real application, this would come from a backend API)
+
 const vehicles = [
     {
         id: 1,
@@ -107,7 +107,6 @@ Object.values(filters).forEach(filter => {
     }
 });
 
-// Booking functionality
 function bookVehicle(vehicleId) {
     const vehicle = vehicles.find(v => v.id === vehicleId);
     if (vehicle && vehicle.available) {
@@ -124,11 +123,9 @@ function viewDetails(vehicleId) {
     if (vehicle) {
         // Store vehicle details in session storage
         sessionStorage.setItem('vehicleDetails', JSON.stringify(vehicle));
-        // You could either redirect to a details page or show a modal
-        // For now, we'll just alert the details
+       
         alert(`${vehicle.name}\nCategory: ${vehicle.category}\nBrand: ${vehicle.brand}\nPrice: $${vehicle.price}/day`);
     }
 }
 
-// Initialize display on page load
 document.addEventListener('DOMContentLoaded', updateVehiclesDisplay);
